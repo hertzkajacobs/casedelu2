@@ -1,0 +1,1158 @@
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8fafc;
+    }
+    
+    .hero-pattern {
+        background-color: #f8fafc;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e2e8f0' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    
+    .case-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .case-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    .color-swatch {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+    
+    .color-swatch:hover {
+        transform: scale(1.2);
+    }
+    
+    .color-swatch.selected {
+        box-shadow: 0 0 0 2px white, 0 0 0 4px #3b82f6;
+    }
+    
+    .phone-model-btn {
+        transition: all 0.2s ease;
+    }
+    
+    .phone-model-btn.selected {
+        background-color: #3b82f6;
+        color: white;
+    }
+    
+    .cart-item-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: #ef4444;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .slide-in {
+        animation: slideIn 0.3s forwards;
+    }
+    
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+        }
+        to {
+            transform: translateX(0);
+        }
+    }
+    
+    .slide-out {
+        animation: slideOut 0.3s forwards;
+    }
+    
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(100%);
+        }
+    }
+    
+    .fade-in {
+        animation: fadeIn 0.3s forwards;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    .fade-out {
+        animation: fadeOut 0.3s forwards;
+    }
+    
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #c5c5c5;
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #a3a3a3;
+    }
+</style>
+        <div class="hidden md:flex items-center space-x-8">
+            <a href="#featured" class="text-gray-600 hover:text-blue-600 transition-colors">Featured</a>
+            <a href="#collections" class="text-gray-600 hover:text-blue-600 transition-colors">Collections</a>
+            <a href="#custom" class="text-gray-600 hover:text-blue-600 transition-colors">Customize</a>
+            <a href="#reviews" class="text-gray-600 hover:text-blue-600 transition-colors">Reviews</a>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+            <button id="search-btn" class="text-gray-600 hover:text-blue-600 transition-colors">
+                <i class="fas fa-search text-lg"></i>
+            </button>
+            <div class="relative">
+                <button id="cart-btn" class="text-gray-600 hover:text-blue-600 transition-colors">
+                    <i class="fas fa-shopping-bag text-lg"></i>
+                    <span id="cart-count" class="cart-item-count">0</span>
+                </button>
+            </div>
+            <button id="mobile-menu-btn" class="md:hidden text-gray-600 hover:text-blue-600 transition-colors">
+                <i class="fas fa-bars text-lg"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200 py-2">
+        <div class="container mx-auto px-4 space-y-2">
+            <a href="#featured" class="block py-2 text-gray-600 hover:text-blue-600 transition-colors">Featured</a>
+            <a href="#collections" class="block py-2 text-gray-600 hover:text-blue-600 transition-colors">Collections</a>
+            <a href="#custom" class="block py-2 text-gray-600 hover:text-blue-600 transition-colors">Customize</a>
+            <a href="#reviews" class="block py-2 text-gray-600 hover:text-blue-600 transition-colors">Reviews</a>
+        </div>
+    </div>
+    
+    <!-- Search Overlay -->
+    <div id="search-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40 flex items-start justify-center pt-20">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4 p-4">
+            <div class="flex items-center border-b border-gray-300 pb-2">
+                <i class="fas fa-search text-gray-400 mr-3"></i>
+                <input type="text" placeholder="Search for phone cases..." class="w-full outline-none text-gray-700">
+                <button id="close-search-btn" class="ml-2 text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mt-4">
+                <p class="text-sm text-gray-500">Popular searches:</p>
+                <div class="flex flex-wrap gap-2 mt-2">
+                    <span class="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-600 hover:bg-gray-200 cursor-pointer">iPhone 15 Pro</span>
+                    <span class="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-600 hover:bg-gray-200 cursor-pointer">Samsung Galaxy S23</span>
+                    <span class="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-600 hover:bg-gray-200 cursor-pointer">Clear Case</span>
+                    <span class="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-600 hover:bg-gray-200 cursor-pointer">Marble Design</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Cart Sidebar -->
+<div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out">
+    <div class="h-full flex flex-col">
+        <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+            <h2 class="text-xl font-semibold">Your Cart</h2>
+            <button id="close-cart-btn" class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div id="cart-items" class="flex-grow overflow-y-auto p-4 space-y-4">
+            <!-- Cart items will be added here dynamically -->
+            <div class="text-center text-gray-500 py-8">
+                Your cart is empty
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-200 p-4 space-y-4">
+            <div class="flex justify-between items-center">
+                <span class="text-gray-600">Subtotal</span>
+                <span id="cart-subtotal" class="font-semibold">$0.00</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-gray-600">Shipping</span>
+                <span class="font-semibold">Free</span>
+            </div>
+            <div class="flex justify-between items-center text-lg">
+                <span class="font-medium">Total</span>
+                <span id="cart-total" class="font-bold">$0.00</span>
+            </div>
+            <button id="checkout-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors">
+                Checkout
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Hero Section -->
+<section class="hero-pattern py-16 md:py-24">
+    <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Protect Your Phone with Style</h1>
+            <p class="text-lg text-gray-600 mb-8">Premium phone cases designed to showcase your personality while providing ultimate protection.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#featured" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg transition-colors">
+                    Shop Now
+                </a>
+                <a href="#custom" class="bg-white hover:bg-gray-100 text-gray-800 font-medium py-3 px-8 rounded-lg border border-gray-300 transition-colors">
+                    Customize Your Case
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products -->
+<section id="featured" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">Featured Cases</h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <!-- Product 1 -->
+            <div class="case-card bg-white rounded-xl overflow-hidden shadow-md">
+                <div class="relative">
+                    <svg class="w-full h-64 text-gray-300 bg-gray-100" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="300" height="300" fill="#f3f4f6"/>
+                        <path d="M130,75 L170,75 C176.627,75 182,80.373 182,87 L182,213 C182,219.627 176.627,225 170,225 L130,225 C123.373,225 118,219.627 118,213 L118,87 C118,80.373 123.373,75 130,75 Z" fill="#d1d5db"/>
+                        <circle cx="150" cy="205" r="10" fill="#9ca3af"/>
+                        <rect x="140" y="85" width="20" height="5" rx="2" fill="#9ca3af"/>
+                        <path d="M130,75 L170,75 C176.627,75 182,80.373 182,87 L182,213 C182,219.627 176.627,225 170,225 L130,225 C123.373,225 118,219.627 118,213 L118,87 C118,80.373 123.373,75 130,75 Z M130,80 C126.134,80 123,83.134 123,87 L123,213 C123,216.866 126.134,220 130,220 L170,220 C173.866,220 177,216.866 177,213 L177,87 C177,83.134 173.866,80 170,80 L130,80 Z" fill="#6b7280"/>
+                        <path d="M123,95 L177,95 L177,200 L123,200 Z" fill="#4b5563"/>
+                        <path d="M123,95 L177,95 L177,200 L123,200 Z" fill="url(#marble-pattern)"/>
+                    </svg>
+                    <defs>
+                        <pattern id="marble-pattern" patternUnits="userSpaceOnUse" width="100" height="100">
+                            <rect width="100" height="100" fill="#f0f9ff"/>
+                            <path d="M0,0 L100,100 M30,0 L100,70 M0,30 L70,100 M0,70 L30,100 M70,0 L100,30" stroke="#93c5fd" stroke-width="0.5"/>
+                            <path d="M20,0 L100,80 M0,20 L80,100 M0,80 L20,100 M80,0 L100,20" stroke="#60a5fa" stroke-width="0.8"/>
+                        </pattern>
+                    </defs>
+                    <div class="absolute top-4 right-4 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">
+                        BEST SELLER
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg mb-1">Blue Marble Case</h3>
+                    <p class="text-gray-500 text-sm mb-2">Compatible with iPhone 15 Pro</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <span class="text-lg font-bold">$29.99</span>
+                            <span class="text-gray-400 text-sm line-through ml-2">$39.99</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <span class="text-sm font-medium">4.8</span>
+                            <span class="text-xs text-gray-500">(124)</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex items-center justify-between">
+                        <div class="flex space-x-1">
+                            <div class="color-swatch bg-blue-400 selected"></div>
+                            <div class="color-swatch bg-pink-400"></div>
+                            <div class="color-swatch bg-green-400"></div>
+                        </div>
+                        <button class="add-to-cart-btn bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 2 -->
+            <div class="case-card bg-white rounded-xl overflow-hidden shadow-md">
+                <div class="relative">
+                    <svg class="w-full h-64 text-gray-300 bg-gray-100" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="300" height="300" fill="#f3f4f6"/>
+                        <path d="M130,75 L170,75 C176.627,75 182,80.373 182,87 L182,213 C182,219.627 176.627,225 170,225 L130,225 C123.373,225 118,219.627 118,213 L118,87 C118,80.373 123.373,75 130,75 Z" fill="#d1d5db"/>
+                        <circle cx="150" cy="205" r="10" fill="#9ca3af"/>
+                        <rect x="140" y="85" width="20" height="5" rx="2" fill="#9ca3af"/>
+                        <path d="M130,75 L170,75 C176.627,75 182,80.373 182,87 L182,213 C182,219.627 176.627,225 170,225 L130,225 C123.373,225 118,219.627 118,213 L118,87 C118,80.373 123.373,75 130,75 Z M130,80 C126.134,80 123,83.134 123,87 L123,213 C123,216.866 126.134,220 130,220 L170,220 C173.866,220 177,216.866 177,213 L177,87 C177,83.134 173.866,80 170,80 L130,80 Z" fill="#6b7280"/>
+                        <path d="M123,95 L177,95 L177,200 L123,200 Z" fill="#4b5563"/>
+                        <path d="M123,95 L177,95 L177,200 L123,200 Z" fill="#fef3c7"/>
+                        <path d="M123,95 L177,95 L177,200 L123,200 Z" fill="url(#floral-pattern)"/>
+                    </svg>
+                    <defs>
+                        <pattern id="floral-pattern" patternUnits="userSpaceOnUse" width="100" height="100">
+                            <rect width="100" height="100" fill="#fef3c7" fill-opacity="0.7"/>
+                            <circle cx="25" cy="25" r="10" fill="#fcd34d" fill-opacity="0.5"/>
+                            <circle cx="75" cy="75" r="10" fill="#fcd34d" fill-opacity="0.5"/>
+                            <circle cx="75" cy="25" r="8" fill="#fcd34d" fill-opacity="0.5"/>
+                            <circle cx="25" cy="75" r="8" fill="#fcd34d" fill-opacity="0.5"/>
+                            <path d="M50,20 C60,10 70,20 50,40 C30,20 40,10 50,20 Z" fill="#d97706" fill-opacity="0.3"/>
+                            <path d="M50,80 C60,70 70,80 50,100 C30,80 40,70 50,80 Z" fill="#d97706" fill-opacity="0.3"/>
+                            <path d="M20,50 C10,60 20,70 40,50 C20,30 10,40 20,50 Z" fill="#d97706" fill-opacity="0.3"/>
+                            <path d="M80,50 C70,60 80,70 100,50 C80,30 70,40 80,50 Z" fill="#d97706" fill-opacity="0.3"/>
+                        </pattern>
+                    </defs>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg mb-1">Floral Pattern Case</h3>
+                    <p class="text-gray-500 text-sm mb-2">Compatible with Samsung Galaxy S23</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <span class="text-lg font-bold">$24.99</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <span class="text-sm font-medium">4.6</span>
+                            <span class="text-xs text-gray-500">(89)</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex items-center justify-between">
+                        <div class="flex space-x-1">
+                            <div class="color-swatch bg-yellow-200 selected"></div>
+                            <div class="color-swatch bg-pink-200"></div>
+                            <div class="color-swatch bg-blue-200"></div>
+                        </div>
+                        <button class="add-to-cart-btn bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 3 -->
+            <div class="case-card bg-white rounded-xl overflow-hidden shadow-md">
+                <div class="relative">
+                    <svg class="w-full h-64 text-gray-300 bg-gray-100" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="300" height="300" fill="#f3f4f6"/>
+                        <path d="M130,75 L170,75 C176.627,75 182,80.373 182,87 L182,213 C182,219.627 176.627,225 170,225 L130,225 C123.373,225 118,219.627 118,213 L118,87 C118,80.373 123.373,75 130,75 Z" fill="#d1d5db"/>
+                        <circle cx="150" cy="205" r="10" fill="#9ca3af"/>
+                        <rect x="140" y="85" width="20" height="5" rx="2" fill="#9ca3af"/>
+                        <path d="M130,75 L170,75 C176.627,75 182,80.373 182,87 L182,213 C182,219.627 176.627,225 170,225 L130,225 C123.373,225 118,219.627 118,213 L118,87 C118,80.373 123.373,75 130,75 Z M130,80 C126.134,80 123,83.134 123,87 L123,213 C123,216.866 126.134,220 130,220 L170,220 C173.866,220 177,216.866 177,213 L177,87 C177,83.134 173.866,80 170,80 L130,80 Z" fill="#6b7280"/>
+                        <path d="M123,95 L177,95 L177,200 L123,200 Z" fill="#4b5563"/>
+                        <path d="M123,95 L177,95 L177,200 L123,200 Z" fill="url(#clear-pattern)"/>
+                    </svg>
+                    <defs>
+                        <pattern id="clear-pattern" patternUnits="userSpaceOnUse" width="100" height="100">
+                            <rect width="100" height="100" fill="#f1f5f9" fill-opacity="0.3"/>
+                            <circle cx="10" cy="10" r="1" fill="#94a3b8"/>
+                            <circle cx="30" cy="10" r="1" fill="#94a3b8"/>
+                            <circle cx="50" cy="10" r="1" fill="#94a3b8"/>
+                            <circle cx="70" cy="10" r="1" fill="#94a3b8"/>
+                            <circle cx="90" cy="10" r="1" fill="#94a3b8"/>
+                            <circle cx="10" cy="30" r="1" fill="#94a3b8"/>
+                            <circle cx="30" cy="30" r="1" fill="#94a3b8"/>
+                            <circle cx="50" cy="30" r="1" fill="#94a3b8"/>
+                            <circle cx="70" cy="30" r="1" fill="#94a3b8"/>
+                            <circle cx="90" cy="30" r="1" fill="#94a3b8"/>
+                            <circle cx="10" cy="50" r="1" fill="#94a3b8"/>
+                            <circle cx="30" cy="50" r="1" fill="#94a3b8"/>
+                            <circle cx="50" cy="50" r="1" fill="#94a3b8"/>
+                            <circle cx="70" cy="50" r="1" fill="#94a3b8"/>
+                            <circle cx="90" cy="50" r="1" fill="#94a3b8"/>
+                            <circle cx="10" cy="70" r="1" fill="#94a3b8"/>
+                            <circle cx="30" cy="70" r="1" fill="#94a3b8"/>
+                            <circle cx="50" cy="70" r="1" fill="#94a3b8"/>
+                            <circle cx="70" cy="70" r="1" fill="#94a3b8"/>
+                            <circle cx="90" cy="70" r="1" fill="#94a3b8"/>
+                            <circle cx="10" cy="90" r="1" fill="#94a3b8"/>
+                            <circle cx="30" cy="90" r="1" fill="#94a3b8"/>
+                            <circle cx="50" cy="90" r="1" fill="#94a3b8"/>
+                            <circle cx="70" cy="90" r="1" fill="#94a3b8"/>
+                            <circle cx="90" cy="90" r="1" fill="#94a3b8"/>
+                        </pattern>
+                    </defs>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg mb-1">Clear MagSafe Case</h3>
+                    <p class="text-gray-500 text-sm mb-2">Compatible with iPhone 15</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <span class="text-lg font-bold">$34.99</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <span class="text-sm font-medium">4.9</span>
+                            <span class="text-xs text-gray-500">(203)</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex items-center justify-between">
+                        <div class="flex space-x-1">
+                            <div class="color-swatch bg-transparent border border-gray-300 selected"></div>
+                            <div class="color-swatch bg-black"></div>
+                        </div>
+                        <button class="add-to-cart-btn bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 4 -->
+            <div class="case-card bg-white rounded-xl overflow-hidden shadow-md">
+                <div class="relative">
+                    <svg class="w-full h-64 text-gray-300 bg-gray-100" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="300" height="300" fill="#f3f4f6"/>
+                        <path d="M130,75 L170,75 C176.627,75 182,80.373 182,87 L182,213 C182,219.627 176.627,225 170,225 L130,225 C123.373,225 118,219.627 118,213 L118,87 C118,80.373 123.373,75 130,75 Z" fill="#d1d5db"/>
+                        <circle cx="150" cy="205" r="10" fill="#9ca3af"/>
+                        <rect x="140" y="85" width="20" height="5" rx="2" fill="#9ca3af"/>
+                        <path d="M130,75 L170,75 C176.627,75 182,80.373 182,87 L182,213 C182,219.627 176.627,225 170,225 L130,225 C123.373,225 118,219.627 118,213 L118,87 C118,80.373 123.373,75 130,75 Z M130,80 C126.134,80 123,83.134 123,87 L123,213 C123,216.866 126.134,220 130,220 L170,220 C173.866,220 177,216.866 177,213 L177,87 C177,83.134 173.866,80 170,80 L130,80 Z" fill="#6b7280"/>
+                        <path d="M123,95 L177,95 L177,200 L123,200 Z" fill="#4b5563"/>
+                        <path d="M123,95 L177,95 L177,200 L123,200 Z" fill="#1e293b"/>
+                        <path d="M123,95 L177,95 L177,200 L123,200 Z" fill="url(#carbon-pattern)"/>
+                    </svg>
+                    <defs>
+                        <pattern id="carbon-pattern" patternUnits="userSpaceOnUse" width="20" height="20">
+                            <rect width="20" height="20" fill="#1e293b"/>
+                            <path d="M0,10 L20,10 M10,0 L10,20" stroke="#334155" stroke-width="0.5"/>
+                            <rect x="0" y="0" width="10" height="10" fill="#334155" fill-opacity="0.1"/>
+                            <rect x="10" y="10" width="10" height="10" fill="#334155" fill-opacity="0.1"/>
+                        </pattern>
+                    </defs>
+                    <div class="absolute top-4 right-4 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded">
+                        NEW
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg mb-1">Carbon Fiber Case</h3>
+                    <p class="text-gray-500 text-sm mb-2">Compatible with Google Pixel 7</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <span class="text-lg font-bold">$32.99</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <span class="text-sm font-medium">4.7</span>
+                            <span class="text-xs text-gray-500">(56)</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex items-center justify-between">
+                        <div class="flex space-x-1">
+                            <div class="color-swatch bg-gray-900 selected"></div>
+                            <div class="color-swatch bg-blue-900"></div>
+                            <div class="color-swatch bg-red-900"></div>
+                        </div>
+                        <button class="add-to-cart-btn bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-12">
+            <a href="#" class="inline-block border border-gray-300 text-gray-700 font-medium py-3 px-8 rounded-lg hover:bg-gray-50 transition-colors">
+                View All Products
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Collections -->
+<section id="collections" class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">Shop by Collection</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Collection 1 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+                <div class="h-48 bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center">
+                    <svg class="w-24 h-24 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2">Minimalist Collection</h3>
+                    <p class="text-gray-600 mb-4">Clean, simple designs for the modern aesthetic.</p>
+                    <a href="#" class="text-blue-600 hover:text-blue-800 font-medium flex items-center">
+                        Shop Now
+                        <svg class="w-4 h-4 ml-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Collection 2 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+                <div class="h-48 bg-gradient-to-r from-pink-400 to-red-500 flex items-center justify-center">
+                    <svg class="w-24 h-24 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2">Artistic Collection</h3>
+                    <p class="text-gray-600 mb-4">Unique designs created by independent artists.</p>
+                    <a href="#" class="text-blue-600 hover:text-blue-800 font-medium flex items-center">
+                        Shop Now
+                        <svg class="w-4 h-4 ml-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Collection 3 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+                <div class="h-48 bg-gradient-to-r from-green-400 to-teal-500 flex items-center justify-center">
+                    <svg class="w-24 h-24 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 8h1a4 4 0 0 1 0 8h-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6 1v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M10 1v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 1v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2">Eco-Friendly Collection</h3>
+                    <p class="text-gray-600 mb-4">Sustainable cases made from recycled materials.</p>
+                    <a href="#" class="text-blue-600 hover:text-blue-800 font-medium flex items-center">
+                        Shop Now
+                        <svg class="w-4 h-4 ml-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Customize Section -->
+<section id="custom" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Design Your Own Case</h2>
+                <p class="text-gray-600">Create a unique phone case that reflects your personal style.</p>
+            </div>
+            
+            <div class="bg-gray-50 rounded-xl p-6 md:p-8 shadow-md">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">Preview</h3>
+                        <div class="bg-white rounded-lg p-4 shadow-inner flex items-center justify-center h-80">
+                            <div id="case-preview" class="relative">
+                                <svg class="w-48 h-96" viewBox="0 0 300 600" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="300" height="600" fill="#f3f4f6"/>
+                                    <path d="M75,50 L225,50 C242.673,50 257,64.327 257,82 L257,518 C257,535.673 242.673,550 225,550 L75,550 C57.327,550 43,535.673 43,518 L43,82 C43,64.327 57.327,50 75,50 Z" fill="#d1d5db"/>
+                                    <circle cx="150" cy="510" r="25" fill="#9ca3af"/>
+                                    <rect x="125" y="70" width="50" height="10" rx="5" fill="#9ca3af"/>
+                                    <path d="M75,50 L225,50 C242.673,50 257,64.327 257,82 L257,518 C257,535.673 242.673,550 225,550 L75,550 C57.327,550 43,535.673 43,518 L43,82 C43,64.327 57.327,50 75,50 Z M75,65 C65.611,65 58,72.611 58,82 L58,518 C58,527.389 65.611,535 75,535 L225,535 C234.389,535 242,527.389 242,518 L242,82 C242,72.611 234.389,65 225,65 L75,65 Z" fill="#6b7280"/>
+                                    <path d="M58,100 L242,100 L242,480 L58,480 Z" fill="#4b5563"/>
+                                    <path id="case-color" d="M58,100 L242,100 L242,480 L58,480 Z" fill="#3b82f6"/>
+                                    <text id="case-text" x="150" y="290" font-family="Arial" font-size="24" fill="white" text-anchor="middle">Your Text Here</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">Customization Options</h3>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Select Phone Model</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button class="phone-model-btn selected px-4 py-2 border border-gray-300 rounded-md text-sm font-medium">iPhone 15 Pro</button>
+                                    <button class="phone-model-btn px-4 py-2 border border-gray-300 rounded-md text-sm font-medium">Samsung Galaxy S23</button>
+                                    <button class="phone-model-btn px-4 py-2 border border-gray-300 rounded-md text-sm font-medium">Google Pixel 7</button>
+                                    <button class="phone-model-btn px-4 py-2 border border-gray-300 rounded-md text-sm font-medium">iPhone 14</button>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Case Color</label>
+                                <div class="flex flex-wrap gap-2">
+                                    <div class="color-swatch bg-blue-500 selected" data-color="#3b82f6"></div>
+                                    <div class="color-swatch bg-red-500" data-color="#ef4444"></div>
+                                    <div class="color-swatch bg-green-500" data-color="#10b981"></div>
+                                    <div class="color-swatch bg-yellow-500" data-color="#f59e0b"></div>
+                                    <div class="color-swatch bg-purple-500" data-color="#8b5cf6"></div>
+                                    <div class="color-swatch bg-pink-500" data-color="#ec4899"></div>
+                                    <div class="color-swatch bg-gray-800" data-color="#1f2937"></div>
+                                    <div class="color-swatch bg-transparent border border-gray-300" data-color="transparent"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="custom-text" class="block text-sm font-medium text-gray-700 mb-2">Add Custom Text</label>
+                                <input type="text" id="custom-text" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Enter your text">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Case Type</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button class="phone-model-btn selected px-4 py-2 border border-gray-300 rounded-md text-sm font-medium">Standard</button>
+                                    <button class="phone-model-btn px-4 py-2 border border-gray-300 rounded-md text-sm font-medium">MagSafe</button>
+                                    <button class="phone-model-btn px-4 py-2 border border-gray-300 rounded-md text-sm font-medium">Wallet Case</button>
+                                    <button class="phone-model-btn px-4 py-2 border border-gray-300 rounded-md text-sm font-medium">Rugged</button>
+                                </div>
+                            </div>
+                            
+                            <div class="pt-4">
+                                <button id="add-custom-to-cart" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors">
+                                    Add to Cart - $39.99
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">Why Choose Our Cases</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-blue-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5l6.74-6.76zM16 8L2 22M17.5 15H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Premium Design</h3>
+                <p class="text-gray-600">Our cases are crafted with attention to detail, ensuring both style and functionality.</p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-blue-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Maximum Protection</h3>
+                <p class="text-gray-600">Military-grade drop protection keeps your device safe from everyday accidents.</p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-blue-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M22 4L12 14.01l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Lifetime Warranty</h3>
+                <p class="text-gray-600">We stand behind our products with a comprehensive lifetime warranty.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Reviews -->
+<section id="reviews" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">What Our Customers Say</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Review 1 -->
+            <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+                <div class="flex items-center mb-4">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold">
+                        JD
+                    </div>
+                    <div class="ml-3">
+                        <h4 class="font-semibold">John D.</h4>
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-gray-600">"The quality of these cases is outstanding. I've dropped my phone multiple times and it's still in perfect condition. Highly recommend!"</p>
+            </div>
+            
+            <!-- Review 2 -->
+            <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+                <div class="flex items-center mb-4">
+                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-semibold">
+                        SM
+                    </div>
+                    <div class="ml-3">
+                        <h4 class="font-semibold">Sarah M.</h4>
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-gray-600">"I love the customization options! Created a case with my favorite photo and it turned out beautifully. The colors are vibrant and the print quality is excellent."</p>
+            </div>
+            
+            <!-- Review 3 -->
+            <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+                <div class="flex items-center mb-4">
+                    <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-semibold">
+                        RJ
+                    </div>
+                    <div class="ml-3">
+                        <h4 class="font-semibold">Robert J.</h4>
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-gray-600">"Fast shipping and excellent customer service. The MagSafe case works perfectly with all my accessories. Will definitely be ordering again!"</p>
+            </div>
+        </div>
+        
+        <div class="text-center mt-12">
+            <a href="#" class="inline-block border border-gray-300 text-gray-700 font-medium py-3 px-8 rounded-lg hover:bg-gray-50 transition-colors">
+                Read More Reviews
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter -->
+<section class="py-16 bg-blue-600">
+    <div class="container mx-auto px-4">
+        <div class="max-w-2xl mx-auto text-center">
+            <h2 class="text-3xl font-bold text-white mb-4">Join Our Newsletter</h2>
+            <p class="text-blue-100 mb-8">Subscribe to get updates on new products, exclusive offers, and more.</p>
+            
+            <form class="flex flex-col sm:flex-row gap-4">
+                <input type="email" placeholder="Enter your email" class="flex-grow px-4 py-3 rounded-lg focus:outline-none">
+                <button type="submit" class="bg-white text-blue-600 font-medium px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors">
+                    Subscribe
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-800 text-white py-12">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <h3 class="text-lg font-semibold mb-4">CaseLux</h3>
+                <p class="text-gray-400 mb-4">Premium phone cases designed to protect and showcase your device.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fab fa-pinterest"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Shop</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors">All Products</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors">iPhone Cases</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Samsung Cases</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Google Pixel Cases</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Accessories</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Support</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors">FAQs</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Shipping Info</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Returns & Exchanges</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Warranty</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Company</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Blog</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Sustainability</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Careers</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Press</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2023 CaseLux. All rights reserved.</p>
+            <div class="flex space-x-6">
+                <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+                <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Checkout Modal -->
+<div id="checkout-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold">Checkout</h3>
+            <button id="close-checkout-modal" class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="mb-6">
+            <p class="text-gray-600 mb-4">This is a demo checkout. In a real store, you would proceed to a secure payment page.</p>
+            
+            <div class="bg-green-50 border border-green-200 rounded-md p-4 mb-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-green-700">Your order has been placed successfully!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="text-sm text-gray-500">Order details have been sent to your email.</p>
+        </div>
+        
+        <div class="flex justify-end">
+            <button id="continue-shopping" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">
+                Continue Shopping
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // DOM Elements
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const searchBtn = document.getElementById('search-btn');
+    const searchOverlay = document.getElementById('search-overlay');
+    const closeSearchBtn = document.getElementById('close-search-btn');
+    const cartBtn = document.getElementById('cart-btn');
+    const cartSidebar = document.getElementById('cart-sidebar');
+    const closeCartBtn = document.getElementById('close-cart-btn');
+    const cartItems = document.getElementById('cart-items');
+    const cartCount = document.getElementById('cart-count');
+    const cartSubtotal = document.getElementById('cart-subtotal');
+    const cartTotal = document.getElementById('cart-total');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const checkoutModal = document.getElementById('checkout-modal');
+    const closeCheckoutModal = document.getElementById('close-checkout-modal');
+    const continueShoppingBtn = document.getElementById('continue-shopping');
+    const addToCartBtns = document.querySelectorAll('.add-to-cart-btn');
+    const addCustomToCart = document.getElementById('add-custom-to-cart');
+    const phoneModelBtns = document.querySelectorAll('.phone-model-btn');
+    const colorSwatches = document.querySelectorAll('.color-swatch');
+    const customText = document.getElementById('custom-text');
+    const caseColor = document.getElementById('case-color');
+    const caseText = document.getElementById('case-text');
+    
+    // Cart state
+    let cart = [];
+    let cartOpen = false;
+    
+    // Mobile menu toggle
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+    
+    // Search overlay
+    searchBtn.addEventListener('click', () => {
+        searchOverlay.classList.remove('hidden');
+        setTimeout(() => {
+            searchOverlay.querySelector('input').focus();
+        }, 100);
+    });
+    
+    closeSearchBtn.addEventListener('click', () => {
+        searchOverlay.classList.add('hidden');
+    });
+    
+    // Close search when clicking outside
+    searchOverlay.addEventListener('click', (e) => {
+        if (e.target === searchOverlay) {
+            searchOverlay.classList.add('hidden');
+        }
+    });
+    
+    // Cart sidebar
+    cartBtn.addEventListener('click', toggleCart);
+    
+    closeCartBtn.addEventListener('click', toggleCart);
+    
+    function toggleCart() {
+        if (cartOpen) {
+            cartSidebar.classList.remove('translate-x-0');
+            cartSidebar.classList.add('translate-x-full');
+            setTimeout(() => {
+                document.body.style.overflow = '';
+            }, 300);
+        } else {
+            cartSidebar.classList.remove('translate-x-full');
+            cartSidebar.classList.add('translate-x-0');
+            document.body.style.overflow = 'hidden';
+        }
+        cartOpen = !cartOpen;
+    }
+    
+    // Add to cart functionality
+    addToCartBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const card = this.closest('.case-card');
+            const name = card.querySelector('h3').textContent;
+            const price = parseFloat(card.querySelector('.font-bold').textContent.replace('$', ''));
+            const color = card.querySelector('.color-swatch.selected').style.backgroundColor;
+            
+            addToCart(name, price, color);
+            
+            // Animation feedback
+            this.textContent = 'Added!';
+            this.classList.add('bg-green-600', 'text-white');
+            
+            setTimeout(() => {
+                this.textContent = 'Add to Cart';
+                this.classList.remove('bg-green-600', 'text-white');
+            }, 1500);
+        });
+    });
+    
+    // Add custom case to cart
+    addCustomToCart.addEventListener('click', function() {
+        const selectedColor = document.querySelector('.color-swatch.selected').getAttribute('data-color');
+        const text = customText.value || 'Custom Case';
+        const price = 39.99;
+        
+        addToCart('Custom ' + text + ' Case', price, selectedColor);
+        
+        // Animation feedback
+        this.textContent = 'Added to Cart!';
+        setTimeout(() => {
+            this.textContent = 'Add to Cart - $39.99';
+        }, 1500);
+    });
+    
+    // Phone model selection
+    phoneModelBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const parent = this.parentElement;
+            parent.querySelectorAll('.phone-model-btn').forEach(b => {
+                b.classList.remove('selected');
+            });
+            this.classList.add('selected');
+        });
+    });
+    
+    // Color swatch selection
+    colorSwatches.forEach(swatch => {
+        swatch.addEventListener('click', function() {
+            const parent = this.parentElement;
+            parent.querySelectorAll('.color-swatch').forEach(s => {
+                s.classList.remove('selected');
+            });
+            this.classList.add('selected');
+            
+            // Update preview if in customization section
+            const color = this.getAttribute('data-color');
+            if (color && caseColor) {
+                caseColor.setAttribute('fill', color);
+            }
+        });
+    });
+    
+    // Custom text preview
+    if (customText) {
+        customText.addEventListener('input', function() {
+            caseText.textContent = this.value || 'Your Text Here';
+        });
+    }
+    
+    // Add item to cart
+    function addToCart(name, price, color) {
+        const item = {
+            id: Date.now(),
+            name,
+            price,
+            color,
+            quantity: 1
+        };
+        
+        cart.push(item);
+        updateCart();
+        
+        if (!cartOpen) {
+            toggleCart();
+        }
+    }
+    
+    // Update cart UI
+    function updateCart() {
+        // Update cart count
+        cartCount.textContent = cart.length;
+        
+        // Update cart items
+        if (cart.length === 0) {
+            cartItems.innerHTML = `
+                <div class="text-center text-gray-500 py-8">
+                    Your cart is empty
+                </div>
+            `;
+            cartSubtotal.textContent = '$0.00';
+            cartTotal.textContent = '$0.00';
+            return;
+        }
+        
+        let subtotal = 0;
+        cartItems.innerHTML = '';
+        
+        cart.forEach(item => {
+            subtotal += item.price * item.quantity;
+            
+            const itemElement = document.createElement('div');
+            itemElement.className = 'flex items-center justify-between border-b border-gray-200 pb-4 mb-4';
+            itemElement.innerHTML = `
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-md bg-gray-100 flex items-center justify-center mr-4">
+                        <div class="w-8 h-8 rounded-md" style="background-color: ${item.color};"></div>
+                    </div>
+                    <div>
+                        <h4 class="font-medium">${item.name}</h4>
+                        <p class="text-gray-500 text-sm">$${item.price.toFixed(2)}</p>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex items-center border border-gray-300 rounded-md mr-2">
+                        <button class="decrease-qty px-2 py-1 text-gray-500 hover:text-gray-700" data-id="${item.id}">-</button>
+                        <span class="px-2">${item.quantity}</span>
+                        <button class="increase-qty px-2 py-1 text-gray-500 hover:text-gray-700" data-id="${item.id}">+</button>
+                    </div>
+                    <button class="remove-item text-gray-400 hover:text-red-600" data-id="${item.id}">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            `;
+            
+            cartItems.appendChild(itemElement);
+        });
+        
+        // Add event listeners to quantity buttons and remove buttons
+        document.querySelectorAll('.decrease-qty').forEach(btn => {
+            btn.addEventListener('click', () => {
+                updateItemQuantity(parseInt(btn.dataset.id), -1);
+            });
+        });
+        
+        document.querySelectorAll('.increase-qty').forEach(btn => {
+            btn.addEventListener('click', () => {
+                updateItemQuantity(parseInt(btn.dataset.id), 1);
+            });
+        });
+        
+        document.querySelectorAll('.remove-item').forEach(btn => {
+            btn.addEventListener('click', () => {
+                removeItem(parseInt(btn.dataset.id));
+            });
+        });
+        
+        // Update totals
+        cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+        cartTotal.textContent = `$${subtotal.toFixed(2)}`;
+    }
+    
+    // Update item quantity
+    function updateItemQuantity(id, change) {
+        const itemIndex = cart.findIndex(item => item.id === id);
+        if (itemIndex !== -1) {
+            cart[itemIndex].quantity += change;
+            
+            if (cart[itemIndex].quantity < 1) {
+                removeItem(id);
+            } else {
+                updateCart();
+            }
+        }
+    }
+    
+    // Remove item from cart
+    function removeItem(id) {
+        cart = cart.filter(item => item.id !== id);
+        updateCart();
+    }
+    
+    // Checkout functionality
+    checkoutBtn.addEventListener('click', () => {
+        if (cart.length === 0) {
+            alert('Your cart is empty');
+            return;
+        }
+        
+        toggleCart();
+        checkoutModal.classList.remove('hidden');
+    });
+    
+    closeCheckoutModal.addEventListener('click', () => {
+        checkoutModal.classList.add('hidden');
+    });
+    
+    continueShoppingBtn.addEventListener('click', () => {
+        checkoutModal.classList.add('hidden');
+        cart = [];
+        updateCart();
+    });
+    
+    // Close checkout modal when clicking outside
+    checkoutModal.addEventListener('click', (e) => {
+        if (e.target === checkoutModal) {
+            checkoutModal.classList.add('hidden');
+        }
+    });
+    
+    // Initialize cart
+    updateCart();
+</script>
