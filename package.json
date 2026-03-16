@@ -1,0 +1,16 @@
+{
+  "name": "visitor-intercom-monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace apps/kiosk\" \"npm run dev --workspace apps/staff\" \"npm run dev --workspace apps/admin\" \"npm run dev --workspace server\"",
+    "build": "npm run build --workspace apps/kiosk && npm run build --workspace apps/staff && npm run build --workspace apps/admin && npm run build --workspace server",
+    "lint": "npm run lint --workspace apps/kiosk && npm run lint --workspace apps/staff && npm run lint --workspace apps/admin && npm run lint --workspace server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

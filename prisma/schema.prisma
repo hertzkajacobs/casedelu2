@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  STAFF
+}
+
+enum CheckinType {
+  DELIVERY
+  PATIENT
+  VISITOR
+}
+
+enum CheckinStatus {
+  PENDING
+  ACCEPTED
+  COMPLETED
+}
+
+enum CallStatus {
+  REQUESTED
+  ACTIVE
+  ENDED
+  MISSED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  password     String
+  role         Role
+  department   String
+  checkins     Checkin[] @relation("HandledBy")
+  createdAt    DateTime @default(now())
+}
+
+model Visitor {
+  id             String    @id @default(cuid())
+  name           String
+  phone          String?
+  visitReason    String
+  personVisiting String?
+  relationship   String?
+  signature      String?
+  encryptedBlob  String
+  createdAt      DateTime  @default(now())
+  checkins       Checkin[]
+}
+
+model Checkin {
+  id          String       @id @default(cuid())
+  type        CheckinType
+  visitorId   String?
+  visitor     Visitor?     @relation(fields: [visitorId], references: [id])
+  status      CheckinStatus @default(PENDING)
+  createdAt   DateTime     @default(now())
+  handledById String?
+  handledBy   User?        @relation("HandledBy", fields: [handledById], references: [id])
+}
+
+model Call {
+  id         String     @id @default(cuid())
+  department String
+  status     CallStatus @default(REQUESTED)
+  startedAt  DateTime   @default(now())
+  endedAt    DateTime?
+}
+
+model Device {
+  id        String   @id @default(cuid())
+  type      String
+  location  String
+  status    String
+  lastSeen  DateTime @default(now())
+}
+
+model Department {
+  id                String           @id @default(cuid())
+  name              String           @unique
+  escalationSeconds Int              @default(30)
+  routes            ButtonRoute[]
+}
+
+model ButtonRoute {
+  id           String @id @default(cuid())
+  buttonName   String @unique
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actor     String
+  action    String
+  metadata  Json
+  createdAt DateTime @default(now())
+}
